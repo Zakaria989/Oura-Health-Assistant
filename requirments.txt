@@ -1,0 +1,12 @@
+pandas
+request
+tiktoken
+faiss_cpu
+sentence_transformers
+bitsandbytes
+accelerate
+pypdf
+langchain
+torch
+transformers
+shutil
