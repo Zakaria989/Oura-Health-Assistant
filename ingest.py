@@ -1,11 +1,16 @@
-import subprocess
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from dotenv import load_dotenv
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.document_loaders import DirectoryLoader
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 import shutil
 import os
+import subprocess
+
+# Load api from .env
+load_dotenv()
+
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 #Data path to get data 
 DATA_PATH = "data/csv"
@@ -27,9 +32,11 @@ def create_vector_db():
     #Load the csv files as chunks   
     loader = DirectoryLoader(DATA_PATH,glob="*.csv", loader_cls=CSVLoader)
     data = loader.load()
+    
     print("Creating embeddings")
     #Creating embeddings
-    embeddings = HuggingFaceEmbeddings(model_name ="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={'device':'cuda'})
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key, model="text-embedding-ada-002")
+    
     print("Storing embeddings in database")
     #Creating vector store
     db = FAISS.from_documents(data,embeddings)

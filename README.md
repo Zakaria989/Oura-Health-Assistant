@@ -62,5 +62,9 @@ The goal of this project is to better understand Oura health information, but it
 - Users can interact with the chatbot through the Streamlit interface and receive health insights and advice.
 
 ## Disclaimer
+<<<<<<< Updated upstream
 This project is intended for educational and learning purposes, bugs might occur :). 
 P.S. The chatbot's responses should not replace professional medical advice.
+=======
+This project is intended for educational and learning purposes. The chatbot's responses should not replace professional medical advice.
+>>>>>>> Stashed changes
