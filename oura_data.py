@@ -23,14 +23,17 @@ headers = {
     'Authorization': f'Bearer {oura_api_key}'
 }
 params = {
-    'start_date': '2023-01-02',
-    'end_date': '2023-01-04'
+    'start_date': '2023-06-02',
+    'end_date': '2023-07-03'
 }
 
 # Define column names
 activity_column_names = ["Activity ID", "Activity Day", "Activity Score", "Active Calories", "Resting Time", "Steps"]
-readiness_column_names = ["Readiness Level ID", "Day", "Score", "Temperature Deviation", "Temperature Trend Deviation", "Activity Balance", "Body Temperature", "HRV Balance", "Previous Day Activity", "Previous Night", "Recovery Index", "Resting Heart Rate", "Sleep Balance"]
-sleep_column_names = ["Sleep Info ID", "Day", "Average Heart Rate", "Deep Sleep Duration", "Efficiency", "Latency", "Light Sleep Duration", "Lowest Heart Rate", "Restless Periods", "Bedtime End", "Bedtime Start", "Heart Rate Interval", "Movement 30 Sec", "Period", "Readiness Score Delta", "REM Sleep Duration", "Sleep Phase 5 Min", "Sleep Score Delta", "Time in Bed", "Total Sleep Duration", "Type"]
+readiness_column_names = ["Readiness Level ID", "Day", "Score", "Temperature Deviation", "Temperature Trend Deviation", "Activity Balance", "Body Temperature", 
+                          "HRV Balance", "Previous Day Activity", "Previous Night", "Recovery Index", "Resting Heart Rate", "Sleep Balance"]
+sleep_column_names = ["Sleep Info ID", "Day", "Average Heart Rate", "Deep Sleep Duration", "Efficiency", "Latency", "Light Sleep Duration", "Lowest Heart Rate", 
+                      "Restless Periods", "Bedtime End", "Bedtime Start" , "Movement 30 Sec", "Period", "Readiness Score Delta", 
+                        "REM Sleep Duration", "Sleep Phase 5 Min", "Sleep Score Delta", "Time in Bed", "Total Sleep Duration", "Type"]
 
 # Function to fetch and return activity info
 def fetch_and_return_activity_info():
@@ -63,6 +66,7 @@ def fetch_and_return_readiness_info():
                 "Score": day_values['score'],
                 "Temperature Deviation": day_values['temperature_deviation'],
                 "Temperature Trend Deviation": day_values['temperature_trend_deviation'],
+                "Timestamp":day_values["timestamp"],
                 "Activity Balance": day_values['contributors'].get('activity_balance', 0),
                 "Body Temperature": day_values['contributors'].get('body_temperature', 0),
                 "HRV Balance": day_values['contributors'].get('hrv_balance', 0),
@@ -72,7 +76,7 @@ def fetch_and_return_readiness_info():
                 "Resting Heart Rate": day_values['contributors'].get('resting_heart_rate', 0),
                 "Sleep Balance": day_values['contributors'].get('sleep_balance', 0)
             }, ignore_index=True)
-        readiness_df.to_csv(folder_path +'readiness_data.csv', index=False)
+        readiness_df.to_csv(folder_path + '/readiness_data.csv', index=False)
         print("Readiness data saved to CSV")
 
 # Function to fetch and return sleep info
@@ -94,7 +98,7 @@ def fetch_and_return_sleep_info():
                 "Restless Periods": day_values['restless_periods'],
                 "Bedtime End": day_values['bedtime_end'],
                 "Bedtime Start": day_values['bedtime_start'],
-                "Heart Rate Interval": day_values['heart_rate']['interval'],
+                # "Heart Rate Interval": day_values['heart_rate'].get('interval',None),
                 "Movement 30 Sec": day_values['movement_30_sec'],
                 "Period": day_values['period'],
                 "Readiness Score Delta": day_values['readiness_score_delta'],
@@ -105,7 +109,7 @@ def fetch_and_return_sleep_info():
                 "Total Sleep Duration": day_values['total_sleep_duration'],
                 "Type": day_values['type']
             }, ignore_index=True)
-        sleep_df.to_csv(folder_path + 'sleep_data.csv', index=False)
+        sleep_df.to_csv(folder_path + '/sleep_data.csv', index=False)
         print("Sleep data saved to CSV")
 
 def create_csv_files():

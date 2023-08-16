@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.llms import OpenAI
@@ -42,7 +41,7 @@ def clear_chat_history():
 
 # Setup streamlit
 
-st.set_page_config(page_title="Chatbot", page_icon=":robot_face:")
+st.set_page_config(page_title="Chatbot", page_icon="🤖")
 
 st.title("Chat with your OURA data")
 
