@@ -82,15 +82,7 @@ if st.session_state.messages[-1]["role"] != "assistant":
             placeholder = st.empty()
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)        
-    with st.chat_message("assistant"):
-        st.write(response)
+
 
 
 st.sidebar.button(label= ":wastebasket: Clear chat and history", on_click=clear_chat_history)        
-
-    
-# with table_tab:
-#     data = np.random.randn(10, 1)
-
-#     tab1.subheader("A tab with a chart")
-#     tab1.line_chart(data)

@@ -3,16 +3,16 @@ import os
 import numpy as np
 import pandas as pd
 
+# st.set_page_config(page_title="Tables", page_icon="🔢")
+
+
 
 #Path to our csv data
 DATA_PATH = "data/csv"
 
-
-st.set_page_config(page_title="Tables", page_icon="🔢")
-
 # Logic for handling multiple csv files
 
-csv_files = [file for file in os.listdir(DATA_PATH) if file.endswith(".csv")] # Findes all the files that end with csv in our path
+csv_files = [file for file in os.listdir(DATA_PATH) if file.endswith(".csv")] # Finds all the files that end with csv in our path
 
 dfs = {} # Empty dic to store dataframes with different titles
 
