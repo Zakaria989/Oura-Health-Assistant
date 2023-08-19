@@ -11,7 +11,6 @@ import os
 import openai
 import json
 
-st.set_page_config(page_title="Plots", page_icon="📈")
 
 # Load api from .env
 load_dotenv()
@@ -27,7 +26,15 @@ DATA_PATH = "data/csv"
 # Context and other prompts
 context = """context: Given the information the user gives you, with your own information find the correct column 
     titles that fit the description, and return them like this 'x = {column name for x}, y = {column name for y}'. Be sure to give 
-    the correct column name, watch out for big and small letters"""
+    the correct column name, watch out for big and small letters, example for what you should return:
+    
+    To plot your activity steps against your sleep duration, you can use the following column titles:
+
+        1. X-axis: Steps
+        2. Y-axis: Sleep Duration
+    """
+
+
 
 if 'history' not in st.session_state:
     st.session_state['history'].append((
@@ -148,13 +155,14 @@ def conversational_chat(query):
     st.session_state['history'].append((
         "Be sure to follow this ->",context))
     result = chain({"question": query, "chat_history": st.session_state['history']})
-
+    
+    print("Result to FUNCTION GPT:",result["answer"])
+    print("\n")
     
     response = run_conversation(result["answer"])
     st.session_state['history'].append((query,result["answer"]))
     
-    print(result["answer"])
-    print("\n")
+
     print("\n\t")
     print("\n")
     print(response)
@@ -163,9 +171,11 @@ def conversational_chat(query):
     return result["answer"]
 
 
+st.set_page_config(page_title="Plots", page_icon="📈")
+
 st.markdown("# What chart do you want to visualize?")
 st.sidebar.header("Plotting charts")
-st.write(
+st.sidebar.write(
     """This demo illustrates function calling with GPT, calling a function that plots"""
 )
 
@@ -182,18 +192,16 @@ chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=db.as_retriever
 # Handle user input and return assistant answer 
 if user_input := st.text_input("Enter your message"):
     st.session_state.chart_messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.write(user_input)
-
-    if st.session_state.chart_messages[-1]["role"] != "assistant":
-        with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
-                response = conversational_chat(user_input)
-                placeholder = st.empty()
-        message = {"role": "assistant", "content": response}
-        st.session_state.chart_messages.append(message)
-        with st.chat_message("assistant"):
-            st.write(response)
+    if st.button(label="Get plot"):
+        if st.session_state.chart_messages[-1]["role"] != "assistant":
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    response = conversational_chat(user_input)
+                    placeholder = st.empty()
+            message = {"role": "assistant", "content": response}
+            st.session_state.chart_messages.append(message)
+            with st.chat_message("assistant"):
+                st.write(response)
 
 
 

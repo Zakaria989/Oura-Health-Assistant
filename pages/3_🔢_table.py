@@ -26,7 +26,13 @@ for csv_file in csv_files:
 
 st.set_page_config(page_title="Tables", page_icon="🔢")
 
-st.sidebar.header("Look at different parts of your data in table format")
+st.sidebar.header("Tables")
+st.sidebar.write(
+    """Look at different parts of your data in table formats"""
+)
+
+
+
 
 st.markdown("# Table of your activity data")
 edited_df = st.dataframe(dfs["activity_data"],use_container_width=True)
